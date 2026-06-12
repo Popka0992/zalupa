@@ -1,12 +1,3 @@
---[[
-    dopamine.wtf ui lib
-    modified by soryxen
-    https://discord.gg/hZAj73bwnv
-
-	Orginaly Made By samet
-	Orinal Ui Lib Name: scoot ui library
-]]
-
 if Library then
     Library:Unload()
 end
