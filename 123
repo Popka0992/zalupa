@@ -5113,7 +5113,7 @@ local Library do
         local Window = { 
             Logo = Data.Logo or Data.logo or "",
             FadeTime = Data.FadeTime or Data.fadetime or 0.4,
-            Size = Data.Size or Data.size or UDim2New(0, 1000, 0, 1000),
+            Size = Data.Size or Data.size or UDim2New(2, 1000, 2, 1000),
 
             Pages = { },
             Items = { },
@@ -5153,7 +5153,7 @@ local Library do
                 Image = "rbxassetid://" .. Window.Logo,
                 BackgroundTransparency = 1,
                 Position = UDim2New(0.5, 0, 0, 12),
-                Size = UDim2New(1, 75, 1, 75),
+                Size = UDim2New(3, 200, 3, 200),
                 BorderSizePixel = 0,
                 BackgroundColor3 = FromRGB(255, 255, 255)
             })  Items["Logo"]:AddToTheme({ImageColor3 = "Accent"})
