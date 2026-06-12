@@ -80,9 +80,9 @@ local Library do
         FadeSpeed = 0.2,
 
         Folders = {
-            Directory = "tigra.wtf",
-            Configs = "tigra.wtf/Configs",
-            Assets = "tigra.wtf/Assets",
+            Directory = "scoot",
+            Configs = "scoot/Configs",
+            Assets = "scoot/Assets",
         },
 
         Images = {
@@ -523,7 +523,7 @@ local Library do
                 Image = "rbxassetid://",
 				AnchorPoint = Vector2New(1, 1),
 				BorderColor3 = FromRGB(0, 0, 0),
-				Size = UDim2New(0, 10, 0, 10),
+				Size = UDim2New(0, 6, 0, 6),
 				Position = UDim2New(1, -4, 1, -4),
                 Name = "\0",
 				BorderSizePixel = 0,
@@ -1669,7 +1669,7 @@ local Library do
                     AnchorPoint = Vector2New(0.5, 0.5),
                     Image = "rbxassetid://108016671469439",
                     BackgroundTransparency = 1,
-                    Position = UDim2New(2, 0, 2, 0),
+                    Position = UDim2New(0.5, 0, 0.5, 0),
                     Size = UDim2New(1, 2, 1, 2),
                     BorderSizePixel = 0,
                     BackgroundColor3 = FromRGB(255, 255, 255)
