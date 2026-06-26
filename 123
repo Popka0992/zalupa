@@ -1,8 +1,104 @@
-if Library then
-    Library:Unload()
+
+    local OldLib = pcall(function() return getgenv().Library end) and getgenv().Library
+    if OldLib then
+        pcall(function() OldLib:Unload() end)
+    end
+
+    local TweenService = game:GetService("TweenService")
+    local RunService = game:GetService("RunService")
+    local CoreGui = cloneref and cloneref(game:GetService("CoreGui")) or game:GetService("CoreGui")
+
+    pcall(function()
+        if not isfolder("Tigra/Assets") then
+            makefolder("Tigra/Assets")
+        end
+    end)
+
+    local LoadingGui = Instance.new("ScreenGui")
+    LoadingGui.Name = "\0"
+    LoadingGui.Parent = CoreGui
+    LoadingGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+    LoadingGui.DisplayOrder = 9999
+    LoadingGui.IgnoreGuiInset = true
+
+    local Overlay = Instance.new("Frame")
+    Overlay.Name = "\0"
+    Overlay.Parent = LoadingGui
+    Overlay.Size = UDim2.new(2, 0, 2, 0)
+    Overlay.Position = UDim2.new(-0.5, 0, -0.5, 0)
+    Overlay.BackgroundColor3 = Color3.new(0, 0, 0)
+    Overlay.BackgroundTransparency = 1
+    Overlay.BorderSizePixel = 0
+
+    local BypassingText = Instance.new("TextLabel")
+    BypassingText.Name = "\0"
+    BypassingText.Parent = LoadingGui
+    BypassingText.Size = UDim2.new(1, 0, 0, 50)
+    BypassingText.Position = UDim2.new(0, 0, 0.5, -25)
+    BypassingText.BackgroundTransparency = 1
+    BypassingText.Text = "Bypassing..."
+    BypassingText.TextColor3 = Color3.fromRGB(0, 191, 255)
+    BypassingText.TextSize = 30
+    BypassingText.Font = Enum.Font.GothamBold
+    BypassingText.TextTransparency = 1
+    BypassingText.BorderSizePixel = 0
+
+    local CreditText = Instance.new("TextLabel")
+    CreditText.Name = "\0"
+    CreditText.Parent = LoadingGui
+    CreditText.Size = UDim2.new(1, 0, 0, 30)
+    CreditText.Position = UDim2.new(0, 0, 1, -40)
+    CreditText.BackgroundTransparency = 1
+    CreditText.Text = "made possible by: soryxen"
+    CreditText.TextSize = 16
+    CreditText.Font = Enum.Font.GothamBold
+    CreditText.TextTransparency = 1
+    CreditText.BorderSizePixel = 0
+    CreditText.RichText = true
+    CreditText.TextXAlignment = Enum.TextXAlignment.Center
+
+    local Hue = 0
+    local RainbowConnection = RunService.RenderStepped:Connect(function()
+        Hue = (Hue + 0.0005) % 1
+        CreditText.TextColor3 = Color3.fromHSV(Hue, 1, 1)
+    end)
+
+    local Duration = math.random(410, 580) / 100
+    local FadeIn = TweenService:Create(Overlay, TweenInfo.new(0.7), {BackgroundTransparency = 0.35})
+    local TextFadeIn = TweenService:Create(BypassingText, TweenInfo.new(0.7), {TextTransparency = 0})
+    local CreditFadeIn = TweenService:Create(CreditText, TweenInfo.new(0.7), {TextTransparency = 0})
+
+    FadeIn:Play()
+    TextFadeIn:Play()
+    CreditFadeIn:Play()
+
+    task.wait(0.7)
+    task.wait(Duration - 1.4)
+
+    local FadeOut = TweenService:Create(Overlay, TweenInfo.new(0.7), {BackgroundTransparency = 1})
+    local TextFadeOut = TweenService:Create(BypassingText, TweenInfo.new(0.7), {TextTransparency = 1})
+    local CreditFadeOut = TweenService:Create(CreditText, TweenInfo.new(0.7), {TextTransparency = 1})
+
+    FadeOut:Play()
+    TextFadeOut:Play()
+    CreditFadeOut:Play()
+
+    task.wait(0.7)
+
+    RainbowConnection:Disconnect()
+    LoadingGui:Destroy()
 end
 
-local LoadTick = os.clock()
+task.wait(0.2)
+if ShowWarning and MessageBox then
+    MessageBox.Show({
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        Text = "dopamine.wtf",
+        Description = "Your Executor Is Supported Although You May Experience Lag Or May Be Detected",
+        MessageBoxIcon = "Warning",
+        MessageBoxButtons = "OK",
+    })
+end
 
 local Library do
     local Workspace = game:GetService("Workspace")
@@ -59,7 +155,7 @@ local Library do
     Library = {
         Theme =  { },
 
-        MenuKeybind = tostring(Enum.KeyCode.RightControl), 
+        MenuKeybind = tostring(Enum.KeyCode.RightShift),
         Flags = { },
 
         Tween = {
@@ -71,9 +167,9 @@ local Library do
         FadeSpeed = 0.2,
 
         Folders = {
-            Directory = "scoot",
-            Configs = "scoot/Configs",
-            Assets = "scoot/Assets",
+            Directory = "dopamine",
+            Configs = "dopamine/Configs",
+            Assets = "dopamine/Assets",
         },
 
         Images = {
@@ -231,14 +327,12 @@ local Library do
 
     Library.Theme = TableClone(Themes["Preset"])
 
-    -- Folders
     for Index, Value in Library.Folders do 
         if not isfolder(Value) then
             makefolder(Value)
         end
     end
 
-    -- Images
     for Index, Value in Library.Images do 
         local ImageData = Value
 
@@ -732,7 +826,6 @@ local Library do
         end
     end
 
-    -- Custom font
     local CustomFont = { } do
         function CustomFont:New(Name, Weight, Style, Data)
             if isfile(Library.Folders.Assets .. "/" .. Name .. ".json") then
@@ -767,7 +860,7 @@ local Library do
             Url = "https://github.com/sametexe001/luas/raw/refs/heads/main/fonts/Monaco.ttf"
         })
 
-        Library.Font = CustomFont:Get("Monaco")
+        Library.Font = CustomFont:Get("Monaco") or Enum.Font.GothamBold
     end
 
     Library.Holder = Instances:Create("ScreenGui", {
@@ -815,22 +908,20 @@ local Library do
     })
 
     Library.Unload = function(self)
-        for Index, Value in self.Connections do 
-            Value.Connection:Disconnect()
-        end
-
-        for Index, Value in self.Threads do 
-            coroutine.close(Value)
-        end
-
-        if self.Holder then 
-            self.Holder:Clean()
-        end
-
-        Library = nil 
-        getgenv().Library = nil
-
-        UserInputService.MouseIconEnabled = true
+        pcall(function()
+            for Index, Value in self.Connections do
+                pcall(function() Value.Connection:Disconnect() end)
+            end
+            for Index, Value in self.Threads do
+                pcall(function() coroutine.close(Value) end)
+            end
+            if self.Holder then
+                pcall(function() self.Holder:Clean() end)
+            end
+        end)
+        Library = nil
+        pcall(function() getgenv().Library = nil end)
+        pcall(function() UserInputService.MouseIconEnabled = true end)
     end
 
     Library.GetImage = function(self, Image)
@@ -4778,6 +4869,7 @@ local Library do
 
     -- Library components
     Library.Watermark = function(self, Name)
+        Name = Name or "dopmaine.wtf | discord.gg/hZAj73bwnv"
         local Watermark = { }
 
         local Items = { } do 
@@ -5102,7 +5194,7 @@ local Library do
         Data = Data or { }
 
         local Window = { 
-            Logo = Data.Logo or Data.logo or "",
+            Logo = Data.Logo or Data.logo or "132447680232071",
             FadeTime = Data.FadeTime or Data.fadetime or 0.4,
             Size = Data.Size or Data.size or UDim2New(0, 751, 0, 539),
 
